@@ -49,4 +49,4 @@ function postToDatabase() {
             
     }
 }
-window.addEventListener("online", checkDatabase);
+// window.addEventListener("online", checkDatabase);
