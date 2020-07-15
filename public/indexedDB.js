@@ -13,13 +13,13 @@ request.onerror = function (e) {
 };
 
 request.onsuccess = ({ target }) => {
-    let db = target.result;
+   db = target.result;
     if (navigator.online) {
         postToDatabase();
     } 
 }
 
-request.saveRecord = (item) => {
+function saveRecord(item)  {
     let transaction = db.transaction(["waiting"], "readwrite");
     let store = transaction.objectStore(["waiting"]);
     store.add(item);
@@ -30,9 +30,10 @@ function postToDatabase() {
     let store = transaction.objectStore(["waiting"]);
     let getAll = store.getAll();
     getAll.onsuccess = () => {
-        fetch("/api/transaction", {
+        // add if getall result .length > 0 then run fetch
+        fetch("/api/transaction/bulk", {
             method: "POST",
-            body: JSON.stringify(transaction),
+            body: JSON.stringify(getAll.result),
             headers: {
                 Accept: "application/json, text/plain, */*",
                 "Content-Type": "application/json"
@@ -49,4 +50,4 @@ function postToDatabase() {
             
     }
 }
-// window.addEventListener("online", checkDatabase);
+window.addEventListener("online", postToDatabase);
