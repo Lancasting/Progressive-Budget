@@ -30,7 +30,7 @@ function postToDatabase() {
     let store = transaction.objectStore(["waiting"]);
     let getAll = store.getAll();
     getAll.onsuccess = () => {
-        // add if getall result .length > 0 then run fetch
+        if(getAll.result.length > 0) {// add if getall result .length > 0 then run fetch
         fetch("/api/transaction/bulk", {
             method: "POST",
             body: JSON.stringify(getAll.result),
@@ -47,7 +47,7 @@ function postToDatabase() {
                 let store = transaction.objectStore(["waiting"]);
                 store.clear();
             });
-            
+        }
     }
 }
 window.addEventListener("online", postToDatabase);
